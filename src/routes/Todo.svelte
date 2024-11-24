@@ -18,7 +18,7 @@ let todoList = $state([])
         todoItem = ''
     }
 
-$inspect(todoList)
+// $inspect(todoList)
 
 </script>
 
@@ -35,6 +35,7 @@ $inspect(todoList)
     {#each todoList as item}
     <li> {item}</li>
     {/each}
+    
 </ul>
 
 <style>
