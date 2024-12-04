@@ -1,9 +1,14 @@
 <script>
 
 import editIcon from "$lib/img/edit.svg"
+
 import removeIcon from  "$lib/img/remove.svg"
 
-let todoItem = $state([])
+let props = $props()
+
+let todoItem = $state("")
+
+let todoDesc = $state("")
 
 let todoList = $state([])
 
@@ -11,21 +16,32 @@ function addItem() {
 
         event.preventDefault()
 
-        if (todoItem == '') {
+        if (todoItem == "") {
 
             return;
         }
 
-        todoList.push(todoItem)
+        todoList = [...todoList, {
+            text:todoItem,
+            desc:todoDesc,
+            done: false
+        }]
 
-        todoItem = ''
+        // spread syntax takes array, makes new array with new data appended
+
+        // almost same thing as push but non mutating
+
+        todoItem = ""
+
+        todoDesc = ""
     }
 
 // $inspect(todoList)
 
 function reset() {
 
-    todoList.length = 0;
+    todoList = [];
+
 }
 
 function removeThisTask(thisTask) {
@@ -34,10 +50,49 @@ function removeThisTask(thisTask) {
 
         let thisTaskIndex = todoList.indexOf(thisTask)
 
-        todoList.splice(thisTaskIndex)
+        todoList = todoList.toSpliced(thisTaskIndex, 1)
     }
 
-    console.log("ragghhh")
+}
+
+
+function clearComplete() {
+
+    todoList.forEach(task => {
+
+        if (task.done) {
+
+            removeThisTask(task)
+        }
+        
+    });
+}
+
+function editThisTask(thisTask) {
+
+
+    if (todoList.includes(thisTask)) {
+
+        let thisTaskIndex = todoList.indexOf(thisTask)
+
+       /*  console.log(thisTask) */
+
+        todoItem = thisTask.text 
+
+        todoDesc = thisTask.desc
+
+        todoList = todoList.toSpliced(thisTaskIndex, 1)
+
+        
+
+    }
+
+
+}
+
+function toggleProp() {
+
+    
 }
 
 </script>
@@ -50,7 +105,7 @@ function removeThisTask(thisTask) {
 
             <label for="taskname"> Task Name </label>
 
-            <input type="text" name="taskname" maxlength="120" bind:value={todoItem[0]}>
+            <input type="text" name="taskname" maxlength="120" bind:value={todoItem}>
 
         </div>
 
@@ -58,13 +113,25 @@ function removeThisTask(thisTask) {
 
             <label for="taskdesc"> Task Description </label>
 
-            <input type="text" name="taskdesc" maxlength="480" bind:value={todoItem[1]}>
+            <input type="text" name="taskdesc" maxlength="480" bind:value={todoDesc}>
 
         </div>
   
     </div>
 
-    <button class="feature solidBG inlinebutton" type="submit"> Add </button>
+    <div class="featureButtonsDiv"> 
+
+        <button class="feature solidBG inlinebutton" type="submit"> Add </button>
+
+        <button class="feature solidBG floatbutton" onclick={reset}> Clear All </button>
+
+        <button class="feature solidBG floatbutton"  onclick={clearComplete} type="button"> Clear All Complete </button>
+
+        <button class="feature solidBG floatbutton" type="button"> Settings </button>
+
+        
+    
+    </div>
 
 </form>
 
@@ -72,14 +139,25 @@ function removeThisTask(thisTask) {
 
     {#each todoList as item}
 
-    <div class="oneTask"> 
+    <div class="oneTask" class:done={item.done}> 
 
-        <h2 class="todoHeader"> {item[0]} 
-            <button class="button itemSetting edit" aria-label="edit task"> <img class="icon" alt="" src={editIcon}> </button>
-            <button type="button "class="button itemSetting remove" aria-label="remove task" onclick= {() => removeThisTask(item)}> <img class="icon" alt="" src={removeIcon}> </button>  
-        </h2> 
+        <div class="taskHead">
+
+            <h2 class="todoHeader"> {item.text} </h2> 
+
+            <div>
+
+                <input type="checkbox" bind:checked={item.done} class="checkbox">
+
+                <button class="button itemSetting edit" aria-label="edit task" onclick= {() => editThisTask(item)}> <img class="icon" alt="" src={editIcon} > </button>
+
+                <button type="button" class="button itemSetting remove" aria-label="remove task" onclick= {() => removeThisTask(item)}> <img class="icon" alt="" src={removeIcon}> </button>
+
+            </div>
         
-        <p class="todoDesc"> {item[1]}</p>
+        </div>
+        
+        <p class="todoDesc"> {item.desc}</p>
     
     </div>
 
@@ -87,25 +165,241 @@ function removeThisTask(thisTask) {
 
 </div>
 
-<button class="feature solidBG floatbutton" onclick={reset}> Clear All </button>
-<button class="feature solidBG floatbutton"> Settings </button>
+
 
 <style lang="scss">
 
-    body {
 
+    @use "sass:color" as clr;
+
+
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+
+
+    $dark-purple: #2c1320ff;
+
+    $dark-purple-trans: #2c1320c7;
+
+    $english-violet: #5f4b66ff;
+
+    $cool-gray: #a7adc6ff;
+
+    $cool-gray-2: #8797afff;
+
+    $paynes-gray: #56667aff;
+
+    $off-white: clr.adjust($cool-gray, $lightness:30%);
+
+
+    .done {
+
+        text-decoration:line-through;
+    }
+
+    h2 {
+
+        font-family: "Roboto Condensed";
+
+        color: $off-white;
+
+        display: flex;
+
+        flex-direction: row;
+
+
+    }
+
+    p, button, a, label  {
+
+        color:$off-white;
+    }
+
+    .taskHead {
+
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        display: flex;
+
+        flex-direction: row;
+
+        div {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+        }
+    }
+
+    button.itemSetting, .checkbox {
+
+        vertical-align: 10px;
+
+        flex-direction: row;
         
+        margin:0;
+
+        height: 30px;
+
+        width: 30px;
+
+        background-color: #00000000;
+
+        border-style: none;
+
+        padding: 5px;
+
+        :hover {
+
+            color:#00000084;
+        }
+
     }
 
     .formcontainer {
+
+        font-family: "Titillium Web"; // of course its titillium web. are we surprised
+
+        font-size: 1.5rem;
 
         display: flex;
 
         flex-direction: column;
 
-        max-width: 50vw;
 
     }
+
+    form {
+
+        padding: 0 5% 0 5%;
+        
+        input {
+
+            font-size: 1.5rem;
+
+            margin:5%;
+
+            background-color: $cool-gray-2;
+
+            border-style: none;
+
+            padding:2%;
+
+            border-radius: 34px;
+
+            max-width: 40vw;
+        }
+
+        .oneForm {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin:0;
+
+            text-align: left;
+        }
+    }
+
+    .formcontainer > * {
+
+        margin: 5% 0 5% 0;
+        
+    }
+
+    .oneTask {
+
+        animation: 0.5s ease-out 1 slide-right;
+
+        justify-content: space-between;
+
+        font-size: 1.5rem;
+
+        background-color: $english-violet;
+
+        padding:1% 5% 1% 5%;
+
+        border-radius: 34px;
+
+        margin-bottom: 5%;
+
+        p {
+
+            font-family: "Titillium Web";
+        }
+    }
+
+    .taskList {
+
+        margin: 5%;
+
+    }
+
+    .featureButtonsDiv {
+
+        display: flex;
+
+        justify-content: center;
+
+        margin: 5%;
+
+    }
+
+    .featureButtonsDiv > * {
+
+        border-radius: 34px;
+
+        padding: 5%;
+
+        margin: 0 5% 0 5%;
+
+        border-style: none;
+
+        background-color: clr.adjust($dark-purple-trans, $lightness:-30%);
+    }
+
+    .checkbox {
+
+        padding: 5%;
+    }
+
+    /* yeah i used a generator for my css animations
+    i did modify this though... needs to be exactly how i want */
+
+    /* ----------------------------------------------
+ * Generated by Animista on 2024-12-3 16:9:8
+ * Licensed under FreeBSD License.
+ * See http://animista.net/license for more info. 
+ * w: http://animista.net, t: @cssanimista
+ * ---------------------------------------------- */
+
+@-webkit-keyframes slide-right {
+  0% {
+    -webkit-transform: translateX(-100px);
+            transform: translateX(-100px);
+  }
+  100% {
+    -webkit-transform: translateX(0px);
+            transform: translateX(0px);
+  }
+}
+@keyframes slide-right {
+  0% {
+    -webkit-transform: translateX(-100px);
+            transform: translateX(-100px);
+  }
+  100% {
+    -webkit-transform: translateX(0px);
+            transform: translateX(0px);
+  }
+}
 
 
 </style>

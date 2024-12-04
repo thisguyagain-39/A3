@@ -2,13 +2,13 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="48"
-   height="48"
-   viewBox="0 0 48 48"
+   width="21.141638"
+   height="21.141638"
+   viewBox="0 0 21.141638 21.141638"
    version="1.1"
    id="svg1"
    inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
-   sodipodi:docname="edit.svg"
+   sodipodi:docname="remove.svg"
    inkscape:export-filename="remove.svg"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96"
@@ -38,9 +38,9 @@
     <inkscape:page
        x="0"
        y="0"
-       width="48"
-       height="48"
-       id="page2"
+       width="21.141638"
+       height="21.141638"
+       id="page1"
        margin="0"
        bleed="0" />
   </sodipodi:namedview>
@@ -51,7 +51,8 @@
      inkscape:groupmode="layer"
      id="layer1"
      style="display:none"
-     sodipodi:insensitive="true">
+     sodipodi:insensitive="true"
+     transform="translate(-13.429182,-13.429182)">
     <path
        id="rect1"
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.5"
@@ -104,7 +105,8 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Layer 2">
+     inkscape:label="Layer 2"
+     transform="translate(-13.429182,-13.429182)">
     <path
        id="rect1-7"
        style="display:inline;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.5"
