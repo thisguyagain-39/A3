@@ -125,8 +125,12 @@ function editThisTask(thisTask) {
 function toggleProp() {
 
     toggle = !toggle
+
+    
     
 }
+
+$inspect(toggle)
 
 </script>
 
@@ -160,7 +164,7 @@ function toggleProp() {
 
         <button class="feature solidBG floatbutton"  onclick={clearComplete} type="button"> Clear All Complete </button>
 
-        <button class="feature solidBG floatbutton" type="button"> Settings </button>
+        <button class="feature solidBG floatbutton" type="button" onclick={toggleProp}> Settings </button>
 
         
     
