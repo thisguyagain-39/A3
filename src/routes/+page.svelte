@@ -6,6 +6,24 @@
 
     import '../style.css'
 
+    let { toggle = $bindable(false) } = $props()
+
+    /* if (toggle = true) {
+
+        let swapcontainer = document.querySelector('.swapcontainer')
+
+        swapcontainer.innerHTML = "<Settings/>"
+
+    }
+
+    // it did NOT enjoy when i did this. i don't know why, appaently my variable is null if this bit gets loaded in to the page on the fly but if it gets reloaded it Just Dies.
+
+    // i still have no idea if im doing the props and binding correctly i havent gotten that far
+
+    */
+        
+    
+ 
 </script>
 
 <h1> Spacer. </h1>
@@ -14,9 +32,10 @@
 
     <div class="swapcontainer">
 
-    </div>
+    
+        <Todo bind:toggle={toggle}/>
 
-    <Todo toggle="false"/>
+    </div>
 
 </div>
 

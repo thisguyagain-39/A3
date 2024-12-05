@@ -4,13 +4,36 @@ import editIcon from "$lib/img/edit.svg"
 
 import removeIcon from  "$lib/img/remove.svg"
 
-let props = $props()
+import { json } from "@sveltejs/kit";
+
+import {onMount} from 'svelte';
+
+let { toggle = $bindable() } = $props()
+
+
+
+let thisStorage;
 
 let todoItem = $state("")
 
 let todoDesc = $state("")
 
 let todoList = $state([])
+
+onMount(() => {
+
+    thisStorage = localStorage.getItem('storedList')
+
+    if (thisStorage){
+        todoList = (JSON.parse(thisStorage))
+    }
+})
+
+function updateList() {
+
+    return thisStorage = localStorage.setItem('storedList', JSON.stringify(todoList))
+
+}
 
 function addItem() {
 
@@ -34,6 +57,8 @@ function addItem() {
         todoItem = ""
 
         todoDesc = ""
+
+        updateList()
     }
 
 // $inspect(todoList)
@@ -41,6 +66,7 @@ function addItem() {
 function reset() {
 
     todoList = [];
+    localStorage.clear;
 
 }
 
@@ -52,6 +78,8 @@ function removeThisTask(thisTask) {
 
         todoList = todoList.toSpliced(thisTaskIndex, 1)
     }
+
+    updateList();
 
 }
 
@@ -66,6 +94,8 @@ function clearComplete() {
         }
         
     });
+
+    updateList()
 }
 
 function editThisTask(thisTask) {
@@ -87,11 +117,14 @@ function editThisTask(thisTask) {
 
     }
 
+    updateList();
+
 
 }
 
 function toggleProp() {
 
+    toggle = !toggle
     
 }
 
