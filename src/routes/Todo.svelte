@@ -68,9 +68,9 @@ function updateList() {
 
         case true:
 
-        thisStorage = localStorage.setItem('storedList', JSON.stringify(todoList))
+            thisStorage = localStorage.setItem('storedList', JSON.stringify(todoList))
 
-        console.log("finished pstor check")
+            console.log("finished pstor check")
 
         break;
     
@@ -78,7 +78,7 @@ function updateList() {
 
             // do nothing, localstorage off
 
-        console.log("finished pstor check")
+            console.log("finished pstor check")
 
         break;
 
@@ -93,7 +93,14 @@ function updateList() {
 
             console.log("why no go")
 
-            clearComplete()
+            todoList.forEach(task => {
+
+            if (task.done) {
+
+            removeThisTask(task)
+        }
+
+});
 
         break;
 
@@ -106,6 +113,8 @@ function updateList() {
         break;
 
     }
+
+    console.log("function stop")
         
 }
 
