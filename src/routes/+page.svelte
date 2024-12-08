@@ -6,21 +6,7 @@
 
     import '../style.css'
 
-    let { toggle = $bindable(false) } = $props()
-
-    /* if (toggle = true) {
-
-        let swapcontainer = document.querySelector('.swapcontainer')
-
-        swapcontainer.innerHTML = "<Settings/>"
-
-    }
-
-    // it did NOT enjoy when i did this. i don't know why, appaently my variable is null if this bit gets loaded in to the page on the fly but if it gets reloaded it Just Dies.
-
-    // i still have no idea if im doing the props and binding correctly i havent gotten that far
-
-    */
+    let { toggle = $bindable(true), pstor = $bindable(true), conc = $bindable(false) } = $props()
         
     
  
@@ -30,11 +16,26 @@
 
 <div class="pageContainer"> 
 
-    <div class="swapcontainer">
+    <div class="pageContainer">
 
+        {#if (toggle)}
     
-        <Todo bind:toggle={toggle}/>
-
+        <div class="swapcontainer">
+    
+            <Todo bind:toggle={toggle}/>
+    
+        </div>
+    
+        {:else}
+    
+        <div class="swapcontainer">
+    
+            <Settings bind:toggle={toggle}/>
+    
+        </div>
+    
+        {/if}
+    
     </div>
 
 </div>

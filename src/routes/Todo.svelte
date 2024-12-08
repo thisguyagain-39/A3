@@ -8,11 +8,13 @@ import { json } from "@sveltejs/kit";
 
 import {onMount} from 'svelte';
 
-let { toggle = $bindable() } = $props()
-
-
+let { toggle = $bindable()} = $props()
 
 let thisStorage;
+
+let pstor; // persistient storage: boolean
+
+let conc; // clear on complete: boolean
 
 let todoItem = $state("")
 
@@ -22,18 +24,92 @@ let todoList = $state([])
 
 onMount(() => {
 
-    thisStorage = localStorage.getItem('storedList')
 
-    if (thisStorage){
-        todoList = (JSON.parse(thisStorage))
+    let settings = localStorage.getItem("settingList")
+
+    if (settings) {
+
+        let settingsParsed = JSON.parse(settings)
+
+        pstor = settingsParsed[0].value
+        
+        conc = settingsParsed[1].value
+
+        $inspect(pstor)
+
+        $inspect(conc)
+        
     }
+
+
+    if (pstor = true) {
+
+        thisStorage = localStorage.getItem('storedList')
+
+        if (thisStorage) {
+
+        todoList = (JSON.parse(thisStorage))
+
+        }
+
+    } else if (pstor = false) {
+
+        reset(); 
+    }
+
+
 })
 
 function updateList() {
 
-    return thisStorage = localStorage.setItem('storedList', JSON.stringify(todoList))
+    console.log("started function")
 
+    switch (pstor) {
+
+        case true:
+
+        thisStorage = localStorage.setItem('storedList', JSON.stringify(todoList))
+
+        console.log("finished pstor check")
+
+        break;
+    
+        case false:
+
+            // do nothing, localstorage off
+
+        console.log("finished pstor check")
+
+        break;
+
+       
+    }
+
+    console.log("about to start conc check")
+
+    switch (conc) {
+        
+        case true:
+
+            console.log("why no go")
+
+            clearComplete()
+
+        break;
+
+        case false:
+
+            console.log("huh")
+
+            // do nothing
+
+        break;
+
+    }
+        
 }
+
+
 
 function addItem() {
 
@@ -66,7 +142,12 @@ function addItem() {
 function reset() {
 
     todoList = [];
-    localStorage.clear;
+
+    localStorage.setItem("storedList", []);
+
+    // if localstorage is off in settings this might make something but it doesnt matter because its empty anyways
+
+    // cant use localstorage.clear anymore because that'll kill the settings and itll be
 
 }
 
@@ -113,8 +194,6 @@ function editThisTask(thisTask) {
 
         todoList = todoList.toSpliced(thisTaskIndex, 1)
 
-        
-
     }
 
     updateList();
@@ -125,8 +204,6 @@ function editThisTask(thisTask) {
 function toggleProp() {
 
     toggle = !toggle
-
-    
     
 }
 
@@ -184,7 +261,7 @@ $inspect(toggle)
 
             <div>
 
-                <input type="checkbox" bind:checked={item.done} class="checkbox">
+                <input type="checkbox" bind:checked={item.done} class="checkbox" onchange={updateList}>
 
                 <button class="button itemSetting edit" aria-label="edit task" onclick= {() => editThisTask(item)}> <img class="icon" alt="" src={editIcon} > </button>
 

@@ -1,3 +1,5 @@
 A2 for class. svelte gaming amirite
 
-grade this however i hopefully cooked on both fronts
+I changed my mind grade this on functionality because it's kinda ugly and I don't think I have time to make it pretty
+
+
