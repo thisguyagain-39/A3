@@ -31,9 +31,9 @@ onMount(() => {
 
         let settingsParsed = JSON.parse(settings)
 
-        pstor = settingsParsed[0].value
+        pstor = (settingsParsed[0].value === "true");
         
-        conc = settingsParsed[1].value
+        conc = (settingsParsed[1].value === "true");
 
         $inspect(pstor)
 
@@ -42,7 +42,7 @@ onMount(() => {
     }
 
 
-    if (pstor = true) {
+    if (pstor == true) {
 
         thisStorage = localStorage.getItem('storedList')
 
@@ -52,7 +52,7 @@ onMount(() => {
 
         }
 
-    } else if (pstor = false) {
+    } else if (pstor == false) {
 
         reset(); 
     }
