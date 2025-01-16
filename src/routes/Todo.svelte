@@ -52,6 +52,8 @@ onMount(() => {
 
         }
 
+// todo: change to make this check go first, since we can skip all of this if pstor is false and its annoying me that i did it like now
+
     } else if (pstor == false) {
 
         reset(); 
